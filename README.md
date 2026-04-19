@@ -20,19 +20,19 @@ A web-based **"Hand Betting Game"** built with Mahjong tiles. This project evalu
 ### 1. State Machine Pattern (Game Engine)
 The core game engine is implemented as a Finite State Machine (FSM) within a Zustand store. This prevents illegal game transitions and makes the logic predictable.
 
-### 2. Service Layer & DTOs
-**Decision:** Implementation of a Service Layer and Data Transfer Objects (DTOs).
-**Rationale:** This ensures a strict separation of concerns. The `StoreScoreRequest` handles validation, the `ScoreDTO` ensures a typed data contract, and the `ScoreService` handles the business logic. This makes the backend highly testable and decoupled from HTTP concerns.
+### 2. Service Layer, DTOs & Fat Models
+Implementation of a Service Layer and Data Transfer Objects (DTOs) ensures a strict separation of concerns. The `Score` model encapsulates query and caching logic (Fat Model Pattern).
 
-### 3. Fat Models & Scopes
-Query logic is encapsulated in the `Score` model via scopes (e.g., `topScores()`), adhering to the "Skinny Controller, Fat Model" principle for clean data fetching.
+### 3. Optimized Caching Strategy
+**Decision:** Implementation of **Conditional Cache Invalidation**.
+**Rationale:** The Top 5 leaderboard is cached using the `file` driver. To optimize performance, the cache is only invalidated if a newly created score is high enough to enter the Top 5 list. This avoids unnecessary cache rebuilds for low-scoring games.
 
-### 4. "The Growing Universe" Reshuffle
+### 4. Eager vs. Lazy Loading
+**Decision:** The leaderboard is eager-loaded via shared props.
+**Rationale:** Given the small size of a Top 5 list, eager loading provides a better UX by eliminating "Loading..." states and extra network round-trips. Lazy loading was considered but rejected for this specific scale to maintain a "snappy" landing page experience.
+
+### 5. "The Growing Universe" Reshuffle
 When the Draw Pile is empty, a completely fresh 136-tile deck is added to the pool, demonstrating the application's ability to handle high-volume, stateful entities.
-
-### 5. Omission of Soft Deletes
-**Decision:** Hard deletes used for leaderboard entries.
-**Rationale:** Leaderboard entries are immutable historical records. Soft deletes add unnecessary complexity for data that is never intended to be restored.
 
 ---
 

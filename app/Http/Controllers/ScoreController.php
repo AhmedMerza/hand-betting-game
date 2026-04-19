@@ -22,7 +22,9 @@ class ScoreController extends Controller
     public function index(): Response
     {
         return Inertia::render('Welcome', [
-            'leaderboard' => Score::topScores()->get()
+            'leaderboard' => Score::getCachedLeaderboard(),
+            'laravelVersion' => \Illuminate\Foundation\Application::VERSION,
+            'phpVersion' => PHP_VERSION,
         ]);
     }
 

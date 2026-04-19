@@ -4,12 +4,7 @@ use App\Http\Controllers\ScoreController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'laravelVersion' => Illuminate\Foundation\Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [ScoreController::class, 'index']);
 
 Route::get('/game', function () {
     return Inertia::render('Game');
