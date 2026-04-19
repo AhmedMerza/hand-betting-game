@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'leaderboard' => \App\Models\Score::topScores()->get(),
         ];
     }
 }

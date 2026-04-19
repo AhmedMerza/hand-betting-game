@@ -12,30 +12,31 @@ A web-based **"Hand Betting Game"** built with Mahjong tiles. This project evalu
 - **Testing:** 
     - **Pest PHP:** Backend & Integration testing.
     - **Vitest:** Frontend Logic & State Machine testing.
-- **Package Manager:** NPM (Chosen for maximum "zero-friction" compatibility for reviewers).
 
 ---
 
 ## Architectural Decisions & Patterns
 
 ### 1. State Machine Pattern (Game Engine)
-The core game engine is implemented as a Finite State Machine (FSM) within a Zustand store. This prevents illegal game transitions (e.g., betting during an animation) and makes the game logic predictable and easy to test.
+The core game engine is implemented as a Finite State Machine (FSM) within a Zustand store. This prevents illegal game transitions and makes the logic predictable.
 
-### 2. "The Growing Universe" Reshuffle
-**Decision:** When the Draw Pile is empty, a completely fresh 136-tile deck is added to the pool.
-**Rationale:** This creates a "growing universe" of tiles, demonstrating the application's ability to handle high-volume, stateful entities efficiently while increasing gameplay variety.
+### 2. Service Layer & DTOs
+**Decision:** Implementation of a Service Layer and Data Transfer Objects (DTOs).
+**Rationale:** This ensures a strict separation of concerns. The `StoreScoreRequest` handles validation, the `ScoreDTO` ensures a typed data contract, and the `ScoreService` handles the business logic. This makes the backend highly testable and decoupled from HTTP concerns.
 
-### 3. "Local-First" Session Management
-The frontend is the source of truth for the active game session to ensure zero-latency. The backend serves as a secure vault for Leaderboard verification.
+### 3. Fat Models & Scopes
+Query logic is encapsulated in the `Score` model via scopes (e.g., `topScores()`), adhering to the "Skinny Controller, Fat Model" principle for clean data fetching.
 
-### 4. Strategy Pattern (Evaluation)
-Hand evaluation logic is decoupled from UI components. This allows for easy injection of new rules without refactoring the visual layer.
+### 4. "The Growing Universe" Reshuffle
+When the Draw Pile is empty, a completely fresh 136-tile deck is added to the pool, demonstrating the application's ability to handle high-volume, stateful entities.
+
+### 5. Omission of Soft Deletes
+**Decision:** Hard deletes used for leaderboard entries.
+**Rationale:** Leaderboard entries are immutable historical records. Soft deletes add unnecessary complexity for data that is never intended to be restored.
 
 ---
 
 ## Testing Strategy
-
-To verify this project, you can run:
 ```bash
 # Run Backend Tests (Pest)
 ./vendor/bin/pest
