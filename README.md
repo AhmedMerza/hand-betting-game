@@ -50,6 +50,10 @@ Current game constants:
 
 This means the game allows two successful reshuffles, and ends when the draw pile runs out for the third time.
 
+### 6. Edge Case Handling (Tie Logic)
+**Decision:** A tie (where the next hand total equals the current hand total) is treated as a loss for both "Higher" and "Lower" bets.
+**Rationale:** This follows standard house rules for betting games, ensuring a strict win condition and maintaining game difficulty.
+
 ---
 
 ## Testing Strategy
