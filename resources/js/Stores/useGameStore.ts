@@ -14,6 +14,13 @@ export interface MahjongTile {
     currentValue: number;
 }
 
+export interface HistoryEntry {
+    id: string;
+    hand: MahjongTile[];
+    score: number;
+    isWin: boolean;
+}
+
 interface GameState {
     // State
     status: GameStatus;
@@ -21,7 +28,7 @@ interface GameState {
     drawPile: string[]; // IDs
     discardPile: string[]; // IDs
     currentHand: string[]; // IDs
-    history: { hand: string[], score: number, isWin: boolean }[];
+    history: HistoryEntry[];
     score: number;
     reshuffleCount: number;
 
@@ -32,7 +39,7 @@ interface GameState {
 }
 
 // Helper to generate the initial deck
-const generateDeck = (): MahjongTile[] => {
+const generateDeck = (instance = 0): MahjongTile[] => {
     const tiles: MahjongTile[] = [];
     const suits: Suit[] = ['bamboo', 'dot', 'character'];
     
@@ -41,7 +48,7 @@ const generateDeck = (): MahjongTile[] => {
         for (let rank = 1; rank <= 9; rank++) {
             for (let i = 0; i < 4; i++) {
                 tiles.push({
-                    id: `${suit}-${rank}-${i}`,
+                    id: `${instance}-${suit}-${rank}-${i}`,
                     type: 'number',
                     suit: suit,
                     rank: rank,
@@ -59,7 +66,7 @@ const generateDeck = (): MahjongTile[] => {
     windNames.forEach(name => {
         for (let i = 0; i < 4; i++) {
             tiles.push({
-                id: `wind-${name}-${i}`,
+                id: `${instance}-wind-${name}-${i}`,
                 type: 'wind',
                 suit: 'wind',
                 name: `${name} Wind`,
@@ -74,7 +81,7 @@ const generateDeck = (): MahjongTile[] => {
     dragonNames.forEach(name => {
         for (let i = 0; i < 4; i++) {
             tiles.push({
-                id: `dragon-${name}-${i}`,
+                id: `${instance}-dragon-${name}-${i}`,
                 type: 'dragon',
                 suit: 'dragon',
                 name: `${name} Dragon`,
@@ -98,7 +105,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     reshuffleCount: 0,
 
     startGame: () => {
-        const newDeck = generateDeck();
+        const newDeck = generateDeck(0);
         const shuffledIds = [...newDeck].map(t => t.id).sort(() => Math.random() - 0.5);
         
         // Initial hand
@@ -134,7 +141,7 @@ export const useGameStore = create<GameState>((set, get) => ({
                 return;
             }
             
-            const freshDeck = generateDeck();
+            const freshDeck = generateDeck(updatedReshuffleCount + 1);
             const freshIds = freshDeck.map(t => t.id);
             updatedDeck = [...updatedDeck, ...freshDeck];
             // Combine current discard pile with the fresh deck
@@ -177,6 +184,12 @@ export const useGameStore = create<GameState>((set, get) => ({
         
         updatedDiscardPile = [...updatedDiscardPile, ...currentHand];
 
+        // Store a snapshot of the current hand for history.
+        const handSnapshot = currentHand
+            .map((id) => updatedDeck.find((tile) => tile.id === id))
+            .filter((tile): tile is MahjongTile => Boolean(tile))
+            .map((tile) => ({ ...tile }));
+
         set({
             status: hasReachedLimit ? 'gameover' : 'betting',
             currentHand: nextHand,
@@ -185,9 +198,23 @@ export const useGameStore = create<GameState>((set, get) => ({
             deck: updatedDeck,
             score: newScore,
             reshuffleCount: updatedReshuffleCount,
-            history: [{ hand: currentHand, score: currentTotal, isWin }, ...history]
+            history: [{
+                id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+                hand: handSnapshot,
+                score: currentTotal,
+                isWin,
+            }, ...history]
         });
     },
 
-    resetGame: () => set({ status: 'idle', deck: [], drawPile: [], currentHand: [] })
+    resetGame: () => set({
+        status: 'idle',
+        deck: [],
+        drawPile: [],
+        discardPile: [],
+        currentHand: [],
+        history: [],
+        score: 0,
+        reshuffleCount: 0,
+    })
 }));

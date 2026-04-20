@@ -19,29 +19,35 @@ describe('useGameStore Logic', () => {
     it('should scale non-number tiles correctly on a win', () => {
         const store = useGameStore.getState();
         store.startGame();
-        
-        // Find a dragon/wind tile in the current hand
+
+        // Put a known special tile at the front of drawPile so it appears in nextHand.
         const stateBefore = useGameStore.getState();
-        const nonNumberTileId = stateBefore.currentHand.find(id => {
-            const t = stateBefore.deck.find(tile => tile.id === id);
-            return t?.type !== 'number';
+        const nonNumberTileId = stateBefore.drawPile.find((id) => {
+            const tile = stateBefore.deck.find((candidate) => candidate.id === id);
+            return tile?.type !== 'number';
         });
 
-        if (nonNumberTileId) {
-            const tileBefore = stateBefore.deck.find(t => t.id === nonNumberTileId);
-            const initialVal = tileBefore!.currentValue;
-
-            // Force a "higher" bet and manipulate the deck for a guaranteed win
-            // (In a real test we'd mock the draw, but here we'll just check if scaling triggers)
-            store.bet('higher'); 
-
-            const stateAfter = useGameStore.getState();
-            const updatedTile = stateAfter.deck.find(t => t.id === nonNumberTileId);
-            
-            // If it was a win, value should be initial + 1
-            // Note: Since we use random shuffle, we check if it changed at all
-            expect(updatedTile!.currentValue).not.toBe(initialVal);
+        if (!nonNumberTileId) {
+            return;
         }
+
+        useGameStore.setState((state) => ({
+            drawPile: [
+                nonNumberTileId,
+                ...state.drawPile.filter((id) => id !== nonNumberTileId),
+            ],
+        }));
+
+        const tileBefore = stateBefore.deck.find((tile) => tile.id === nonNumberTileId);
+        const initialVal = tileBefore!.currentValue;
+
+        store.bet('higher');
+
+        const stateAfter = useGameStore.getState();
+        const updatedTile = stateAfter.deck.find((tile) => tile.id === nonNumberTileId);
+
+        // Any special tile in nextHand should be adjusted by +1 or -1.
+        expect(updatedTile!.currentValue).not.toBe(initialVal);
     });
 
     it('should trigger game over if a tile reaches 10', () => {
