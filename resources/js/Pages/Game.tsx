@@ -198,10 +198,10 @@ export default function Game() {
     }
 
     return (
-        <div className="min-h-screen w-full bg-[#1a3a17] text-white flex flex-col overflow-x-hidden relative font-sans">
+        <div className="h-screen w-full bg-[#1a3a17] text-white flex flex-col overflow-hidden relative font-sans">
             <Head title="Playing Game" />
 
-            <div className="flex flex-wrap justify-between items-center gap-3 sm:gap-4 p-3 sm:p-6 lg:p-8 z-20">
+            <div className="flex-none flex flex-wrap justify-between items-center gap-3 sm:gap-4 p-3 sm:p-6 lg:p-8 z-20">
                 <div className="flex flex-col">
                     <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Total Score</span>
                     <AnimatedNumber value={score} className="text-3xl sm:text-5xl font-black" />
@@ -224,8 +224,8 @@ export default function Game() {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col lg:flex-row p-2 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-6">
-                <div className="w-full lg:w-80 h-44 sm:h-56 lg:h-full bg-black/20 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/5 p-3 sm:p-4 lg:p-6 flex flex-col gap-3 sm:gap-4">
+            <div className="flex-1 min-h-0 flex flex-col lg:flex-row p-2 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-6 overflow-hidden">
+                <div className="w-full lg:w-80 h-44 sm:h-56 lg:h-full bg-black/20 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/5 p-3 sm:p-4 lg:p-6 flex flex-col gap-3 sm:gap-4 overflow-hidden">
                     <h3 className="text-xs uppercase tracking-widest text-slate-400 font-bold">History</h3>
                     <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
                         {(Array.isArray(history) ? [...history].reverse() : []).map((item) => (
