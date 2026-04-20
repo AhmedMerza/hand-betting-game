@@ -49,6 +49,12 @@ export default function Welcome({ laravelVersion, phpVersion, leaderboard }: Pro
                     >
                         START NEW GAME
                     </Link>
+                    <Link
+                        href="/tutorial?from=landing"
+                        className="block w-full py-3 bg-white/10 text-emerald-50 rounded-xl font-semibold text-sm hover:bg-white/15 transition-all border border-white/10"
+                    >
+                        HOW TO PLAY
+                    </Link>
                     
                     <div className="mt-16 text-left">
                         <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-4">Top 5 Leaderboard</h2>
@@ -90,6 +96,7 @@ export default function Welcome({ laravelVersion, phpVersion, leaderboard }: Pro
                     Laravel v{laravelVersion} • PHP v{phpVersion}
                 </div>
             </motion.div>
+
         </div>
     );
 }

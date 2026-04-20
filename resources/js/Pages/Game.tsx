@@ -298,12 +298,20 @@ export default function Game() {
             </div>
 
             <div className="p-4 bg-black/40 text-center z-20 border-t border-white/5">
-                <button
-                    onClick={() => router.get('/')}
-                    className="text-[10px] uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
-                >
-                    Quit Game
-                </button>
+                <div className="flex items-center justify-center gap-6">
+                    <button
+                        onClick={() => router.get('/')}
+                        className="text-[10px] uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
+                    >
+                        Quit Game
+                    </button>
+                    <button
+                        onClick={() => router.get('/tutorial?from=game')}
+                        className="text-[10px] uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
+                    >
+                        How To Play
+                    </button>
+                </div>
             </div>
         </div>
     );
