@@ -63,6 +63,7 @@ export default function Game() {
     const currentHand = useGameStore((state) => state.currentHand);
     const deck = useGameStore((state) => state.deck);
     const drawPile = useGameStore((state) => state.drawPile);
+    const discardPile = useGameStore((state) => state.discardPile);
     const score = useGameStore((state) => state.score);
     const reshuffleCount = useGameStore((state) => state.reshuffleCount);
     const history = useGameStore((state) => state.history);
@@ -128,7 +129,10 @@ export default function Game() {
             reshuffles: reshuffleCount,
         }, {
             preserveScroll: true,
-            onSuccess: () => setHasSaved(true),
+            onSuccess: () => {
+                setHasSaved(true);
+                router.get('/');
+            },
             onFinish: () => setIsSaving(false),
         });
     };
@@ -211,6 +215,10 @@ export default function Game() {
                     <div className="text-right">
                         <span className="block text-[10px] text-slate-400 uppercase">Draw Pile</span>
                         <AnimatedNumber value={drawPile.length} className="text-xl font-bold text-emerald-300" />
+                    </div>
+                    <div className="text-right">
+                        <span className="block text-[10px] text-slate-400 uppercase">Discard Pile</span>
+                        <AnimatedNumber value={discardPile.length} className="text-xl font-bold text-amber-300" />
                     </div>
                 </div>
             </div>
