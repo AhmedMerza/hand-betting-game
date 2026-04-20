@@ -82,11 +82,13 @@ export default function Game() {
     }, [history]);
 
     useEffect(() => {
-        setHasSaved(false);
-        setPlayerName('Guest');
-        setFinalScore(0);
-        startGame();
-    }, [startGame]);
+        if (status === 'idle') {
+            setHasSaved(false);
+            setPlayerName('Guest');
+            setFinalScore(0);
+            startGame();
+        }
+    }, [startGame, status]);
 
     useEffect(() => {
         if (status === 'gameover') {

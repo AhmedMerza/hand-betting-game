@@ -3,6 +3,12 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import MahjongTileCard from '@/Components/Molecules/MahjongTileCard';
 import type { MahjongTile } from '@/Stores/useGameStore';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 interface TutorialProps {
     from?: 'landing' | 'game';
@@ -34,9 +40,15 @@ export default function Tutorial() {
                         <h1 className="text-xl sm:text-3xl font-black tracking-tight">How To Play</h1>
                         <p className="text-emerald-100/70 text-xs sm:text-sm">Everything you need in one screen.</p>
                     </div>
-                    <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
-                        <Link href={backHref} className="text-center px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-xs sm:text-sm font-semibold">Back</Link>
-                        <Link href="/game" className="text-center px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-semibold">Start Game</Link>
+                    <div className={cn("grid gap-2 w-full sm:w-auto", from === 'game' ? "grid-cols-1" : "grid-cols-2 sm:flex")}>
+                        <Link href={backHref} className="text-center px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-xs sm:text-sm font-semibold">
+                            {from === 'game' ? 'Back to Game' : 'Back'}
+                        </Link>
+                        {from !== 'game' && (
+                            <Link href="/game" className="text-center px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-semibold">
+                                Start Game
+                            </Link>
+                        )}
                     </div>
                 </div>
 
