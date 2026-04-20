@@ -21,27 +21,27 @@ export default function Tutorial() {
     const backHref = from === 'game' ? '/game' : '/';
 
     return (
-        <div className="min-h-screen bg-[#102e12] text-white p-3 sm:p-4">
+        <div className="min-h-screen bg-[#102e12] text-white p-2 sm:p-4">
             <Head title="How To Play" />
 
             <motion.div
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="max-w-7xl mx-auto bg-black/25 border border-white/10 rounded-3xl p-4 sm:p-5 lg:p-6 backdrop-blur-md"
+                className="max-w-7xl mx-auto bg-black/25 border border-white/10 rounded-2xl sm:rounded-3xl p-3 sm:p-5 lg:p-6 backdrop-blur-md"
             >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3 sm:mb-4">
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-black tracking-tight">How To Play</h1>
-                        <p className="text-emerald-100/70 text-sm">Everything you need in one screen.</p>
+                        <h1 className="text-xl sm:text-3xl font-black tracking-tight">How To Play</h1>
+                        <p className="text-emerald-100/70 text-xs sm:text-sm">Everything you need in one screen.</p>
                     </div>
-                    <div className="flex gap-2">
-                        <Link href={backHref} className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-xs sm:text-sm font-semibold">Back</Link>
-                        <Link href="/game" className="px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-semibold">Start Game</Link>
+                    <div className="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
+                        <Link href={backHref} className="text-center px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-xs sm:text-sm font-semibold">Back</Link>
+                        <Link href="/game" className="text-center px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-semibold">Start Game</Link>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 text-xs sm:text-sm items-start">
-                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-4 h-fit">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-3 text-xs sm:text-sm items-start">
+                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4 h-fit">
                         <h2 className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-2">Tile Colors</h2>
                         <ul className="space-y-1.5 text-emerald-50/90">
                             <li><span className="font-bold text-emerald-300">Bamboo</span> = green number</li>
@@ -52,19 +52,19 @@ export default function Tutorial() {
                         </ul>
                     </section>
 
-                    <section className="lg:col-span-8 rounded-2xl border border-white/10 bg-black/20 p-4 h-fit">
+                    <section className="lg:col-span-8 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4 h-fit">
                         <h2 className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-2">Tile Value Examples</h2>
                         <p className="text-emerald-100/80 text-xs mb-2">Number tiles keep face value. Winds/Dragons start at 5. Badge is current value.</p>
-                        <div className="flex flex-wrap items-start gap-3 sm:gap-4 pt-2 pb-2 px-2 overflow-visible">
+                        <div className="flex flex-nowrap sm:flex-wrap items-start gap-2 sm:gap-4 pt-2 pb-2 px-1 sm:px-2 overflow-x-auto sm:overflow-visible snap-x snap-mandatory">
                             {exampleTiles.map((tile) => (
-                                <div key={tile.id} className="shrink-0 scale-[0.52] sm:scale-[0.58] origin-top-left">
+                                <div key={tile.id} className="shrink-0 snap-start scale-[0.48] sm:scale-[0.58] origin-top-left">
                                     <MahjongTileCard tile={tile} />
                                 </div>
                             ))}
                         </div>
                     </section>
 
-                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-4 h-fit">
+                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4 h-fit">
                         <h2 className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-2">Round Flow</h2>
                         <ol className="space-y-1.5 list-decimal pl-5 text-emerald-50/90">
                             <li>Current hand has 3 tiles.</li>
@@ -74,7 +74,7 @@ export default function Tutorial() {
                         </ol>
                     </section>
 
-                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-4 h-fit">
+                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4 h-fit">
                         <h2 className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-2">Scoring</h2>
                         <ul className="space-y-1.5 text-emerald-50/90">
                             <li><span className="font-bold text-emerald-300">Win</span>: +10</li>
@@ -86,7 +86,7 @@ export default function Tutorial() {
                         </ul>
                     </section>
 
-                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-4 h-fit">
+                    <section className="lg:col-span-4 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4 h-fit">
                         <h2 className="text-[11px] uppercase tracking-widest text-emerald-300 font-bold mb-2">Deck & Game Over</h2>
                         <ul className="space-y-1.5 text-emerald-50/90">
                             <li>HUD shows <span className="font-bold">Draw</span> and <span className="font-bold">Discard</span> piles.</li>

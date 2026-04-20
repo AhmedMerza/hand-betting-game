@@ -115,7 +115,7 @@ export default function Game() {
     }, 0);
     const handKey = currentHand.join('|');
     const handStageWidth = currentHand.length > 0 ? (currentHand.length * 96) + ((currentHand.length - 1) * 16) : 0;
-    const handStageOuterWidth = handStageWidth + 24; // room for badge overhang on both sides
+    const handStageOuterWidth = handStageWidth + 36; // extra room for badge overhang + device pixel rounding
 
     const saveScore = () => {
         if (hasSaved || isSaving) {
@@ -198,34 +198,34 @@ export default function Game() {
     }
 
     return (
-        <div className="h-screen w-screen bg-[#1a3a17] text-white flex flex-col overflow-hidden relative font-sans">
+        <div className="min-h-screen w-full bg-[#1a3a17] text-white flex flex-col overflow-x-hidden relative font-sans">
             <Head title="Playing Game" />
 
-            <div className="flex flex-wrap justify-between items-center gap-4 p-4 sm:p-6 lg:p-8 z-20">
+            <div className="flex flex-wrap justify-between items-center gap-3 sm:gap-4 p-3 sm:p-6 lg:p-8 z-20">
                 <div className="flex flex-col">
                     <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Total Score</span>
-                    <AnimatedNumber value={score} className="text-4xl sm:text-5xl font-black" />
+                    <AnimatedNumber value={score} className="text-3xl sm:text-5xl font-black" />
                 </div>
-                <div className="flex gap-5 sm:gap-8">
+                <div className="flex gap-4 sm:gap-8">
                     <div className="text-right">
                         <span className="block text-[10px] text-slate-400 uppercase">Reshuffles Used</span>
-                        <span className="text-xl font-bold">
+                        <span className="text-base sm:text-xl font-bold">
                             <AnimatedNumber value={reshuffleCount} /> / {MAX_RESHUFFLES}
                         </span>
                     </div>
                     <div className="text-right">
                         <span className="block text-[10px] text-slate-400 uppercase">Draw Pile</span>
-                        <AnimatedNumber value={drawPile.length} className="text-xl font-bold text-emerald-300" />
+                        <AnimatedNumber value={drawPile.length} className="text-base sm:text-xl font-bold text-emerald-300" />
                     </div>
                     <div className="text-right">
                         <span className="block text-[10px] text-slate-400 uppercase">Discard Pile</span>
-                        <AnimatedNumber value={discardPile.length} className="text-xl font-bold text-amber-300" />
+                        <AnimatedNumber value={discardPile.length} className="text-base sm:text-xl font-bold text-amber-300" />
                     </div>
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden p-3 sm:p-4 lg:p-6 gap-4 lg:gap-6">
-                <div className="w-full lg:w-80 h-56 lg:h-full bg-black/20 backdrop-blur-md rounded-3xl border border-white/5 p-4 lg:p-6 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col lg:flex-row p-2 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-6">
+                <div className="w-full lg:w-80 h-44 sm:h-56 lg:h-full bg-black/20 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-white/5 p-3 sm:p-4 lg:p-6 flex flex-col gap-3 sm:gap-4">
                     <h3 className="text-xs uppercase tracking-widest text-slate-400 font-bold">History</h3>
                     <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
                         {(Array.isArray(history) ? [...history].reverse() : []).map((item) => (
@@ -250,16 +250,16 @@ export default function Game() {
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center gap-6 sm:gap-8 overflow-hidden">
+                <div className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-8">
                     <div className="text-center">
                         <h2 className="text-xs uppercase tracking-[0.4em] text-emerald-300/40 font-bold mb-2">Hand Total</h2>
-                        <motion.div key={handTotal} initial={{ scale: 1.5 }} animate={{ scale: 1 }} className="text-6xl sm:text-8xl font-black tracking-tighter">
+                        <motion.div key={handTotal} initial={{ scale: 1.5 }} animate={{ scale: 1 }} className="text-5xl sm:text-8xl font-black tracking-tighter">
                             {handTotal}
                         </motion.div>
                     </div>
 
-                    <div className="relative bg-black/20 rounded-[32px] p-8 border border-white/5 shadow-inner inline-flex items-center justify-center max-w-full w-fit mx-auto">
-                        <div className="relative overflow-hidden pt-3 pb-2 px-3" style={{ width: handStageOuterWidth, height: 164 }}>
+                    <div className="relative bg-black/20 rounded-[24px] sm:rounded-[32px] p-3 sm:p-8 border border-white/5 shadow-inner inline-flex items-center justify-center max-w-full w-full sm:w-fit mx-auto overflow-x-auto">
+                        <div className="relative overflow-hidden pt-3 pb-2 px-3 mx-auto scale-95 sm:scale-100 origin-top" style={{ width: handStageOuterWidth, height: 164 }}>
                             <AnimatePresence mode="sync" initial={false}>
                                 <motion.div
                                     key={handKey}
@@ -278,18 +278,18 @@ export default function Game() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 w-full sm:w-auto">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 w-full sm:w-auto">
                         <button
                             onClick={() => handleBet('lower')}
                             disabled={isBetLocked || status !== 'betting'}
-                            className="px-8 sm:px-12 py-4 sm:py-6 bg-[#3d2b2b] hover:bg-[#5a3e3e] border border-rose-500/20 rounded-2xl font-bold uppercase tracking-widest shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 sm:px-12 py-3 sm:py-6 bg-[#3d2b2b] hover:bg-[#5a3e3e] border border-rose-500/20 rounded-2xl font-bold uppercase tracking-widest shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             ↓ Lower
                         </button>
                         <button
                             onClick={() => handleBet('higher')}
                             disabled={isBetLocked || status !== 'betting'}
-                            className="px-8 sm:px-12 py-4 sm:py-6 bg-[#2a4d2e] hover:bg-[#3d7042] border border-emerald-500/20 rounded-2xl font-bold uppercase tracking-widest shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 sm:px-12 py-3 sm:py-6 bg-[#2a4d2e] hover:bg-[#3d7042] border border-emerald-500/20 rounded-2xl font-bold uppercase tracking-widest shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             ↑ Higher
                         </button>
