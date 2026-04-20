@@ -82,4 +82,7 @@ npm test
 ---
 
 ## AI Disclosure
-AI tooling was used for architectural consultation, refactoring assistance, and iteration support during implementation and debugging.
+This project was architected and implemented using AI as a primary development tool, orchestrated through an iterative **"Human-in-the-Loop"** workflow.
+
+- **Role of the Developer:** Acted as System Architect and Product Lead—defining the technical requirements, designing the state machine logic, selecting the tech stack, and providing granular course corrections during implementation.
+- **Role of AI:** Assisted in the rapid generation of boilerplate, complex CSS transitions, and implementation details based on specific architectural directives provided by the developer. No logic was implemented without human validation and refinement.
