@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 
-export type GameStatus = 'idle' | 'betting' | 'dealing' | 'evaluating' | 'gameover';
+export const MAX_RESHUFFLES = 2;
+export const MAX_EXHAUSTIONS = 3;
+
+export type GameStatus = 'idle' | 'betting' | 'gameover';
 export type TileType = 'number' | 'wind' | 'dragon';
 export type Suit = 'bamboo' | 'dot' | 'character' | 'wind' | 'dragon';
 
@@ -136,7 +139,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         let updatedReshuffleCount = reshuffleCount;
 
         if (updatedDrawPile.length < 3) {
-            if (updatedReshuffleCount >= 2) { // 3rd time draw pile runs out
+            if (updatedReshuffleCount >= MAX_RESHUFFLES) { // 3rd time draw pile runs out
                 set({ status: 'gameover' });
                 return;
             }

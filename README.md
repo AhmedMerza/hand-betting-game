@@ -1,7 +1,17 @@
-# Hand Betting Game - Technical Assessment
+# Hand Betting Game
 
 ## Overview
-A web-based **"Hand Betting Game"** built with Mahjong tiles. This project evaluates complex state management, UI polish, and scalable architecture. The game features a dynamic tile-scaling system where specific tiles change value based on hand outcomes.
+A web-based **"Hand Betting Game"** built with Mahjong tiles. The project focuses on game state management, polished UI interactions, and a scalable code structure. The game features a dynamic tile-scaling system where specific tiles change value based on hand outcomes.
+
+Current features:
+- Landing page with **Start New Game** and **Top 5 leaderboard**
+- Full Mahjong tile set (Number, Wind, Dragon) with dynamic scaling
+- Draw pile + discard pile tracking with reshuffle mechanics
+- Game-over conditions:
+  - Any tile reaches `0` or `10`
+  - Draw pile exhaustion on the 3rd run-out
+- In-game history view, animated counters, and animated hand transitions
+- End-game save score flow with redirect back to landing page
 
 ## Tech Stack
 - **Backend:** Laravel 13 (with SQLite)
@@ -33,6 +43,12 @@ Implementation of a Service Layer and Data Transfer Objects (DTOs) ensures a str
 
 ### 5. "The Growing Universe" Reshuffle
 When the Draw Pile is empty, a completely fresh 136-tile deck is added to the pool, demonstrating the application's ability to handle high-volume, stateful entities.
+
+Current game constants:
+- `MAX_RESHUFFLES = 2`
+- `MAX_EXHAUSTIONS = 3`
+
+This means the game allows two successful reshuffles, and ends when the draw pile runs out for the third time.
 
 ---
 
@@ -66,4 +82,4 @@ npm test
 ---
 
 ## AI Disclosure
-Gemini (AI) was used in the development of this project for architectural consultation, boilerplate generation, and strategic planning.
+AI tooling was used for architectural consultation, refactoring assistance, and iteration support during implementation and debugging.
